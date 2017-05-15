@@ -1,0 +1,11 @@
+selenium:
+  node:
+    enabled: true
+    hub:
+      address: 0.0.0.0
+      port: 4444
+    video:
+      host: 127.0.0.1
+      display: 99
+    drivers:
+    - chrome

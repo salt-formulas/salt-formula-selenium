@@ -1,0 +1,48 @@
+---
+driver:
+  name: docker
+  hostname: selenium.ci.local
+  use_sudo: false
+
+provisioner:
+  name: salt_solo
+  salt_install: bootstrap
+  salt_bootstrap_url: https://bootstrap.saltstack.com
+  salt_version: latest
+  require_chef: false
+  log_level: error
+  formula: selenium
+  grains:
+    noservices: True
+  state_top:
+    base:
+      "*":
+        - selenium
+  pillars:
+    top.sls:
+      base:
+        "*":
+          - selenium
+
+verifier:
+  name: inspec
+  sudo: true
+
+
+platforms:
+  - name: ubuntu-trusty
+    driver_config:
+      image: trevorj/salty-whales:trusty
+      platform: ubuntu
+
+  - name: ubuntu-xenial
+    driver_config:
+      image: trevorj/salty-whales:xenial
+      platform: ubuntu
+
+suites:
+  - name: default
+  #  provisioner:
+  #    pillars-from-files:
+  #      selenium.sls: tests/pillar/default.sls
+# vim: ft=yaml sw=2 ts=2 sts=2 tw=125

@@ -1,10 +1,11 @@
 #!/bin/bash
+{%- from "selenium/map.jinja" import server with context %}
 
 # Set the DISPLAY env variable to Firefox and Chrome know where to open the browser.
 
-export DISPLAY=:{{ pillar.selenium.xvfb.display }}
+export DISPLAY=:{{ server.xvfb.display }}
 
-{%- for test in pillar.selenium.tests %}
+{%- for test in server.tests %}
 {%- if test.suite == test_suite and test.browser == test_browser and test.address == test_address %}
 
 {%- if test.browser == 'firefox' %}

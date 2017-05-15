@@ -1,0 +1,15 @@
+Source: salt-formula-selenium
+Maintainer: name@domain.com
+Section: admin
+Priority: optional
+Build-Depends: debhelper (>= 9), salt-master, python, python-yaml
+Standards-Version: 3.9.6
+Homepage: http://www.tcpcloud.eu
+Vcs-Browser: https://github.com/tcpcloud/salt-formula-selenium
+Vcs-Git: https://github.com/tcpcloud/salt-formula-selenium.git
+
+Package: salt-formula-selenium
+Architecture: all
+Depends: ${misc:Depends}, salt-master, reclass
+Description: selenium salt formula
+ Install and configure selenium system.

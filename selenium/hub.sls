@@ -1,45 +1,43 @@
-{% from 'params.sls' import selenium_version with context %}
-
-{%- if pillar.selenium.server.enabled %}
+{%- from "selenium/map.jinja" import hub with context %}
+{%- if hub.enabled %}
 
 include:
-  - java
+- java
 
-selenium_home_dir:
-  file:
-  - directory
+selenium_hub_dir:
+  file.directory:
   - name: /srv/selenium
   - mode: 755
   - makedirs: true
 
-selenium_download:
+selenium_hub_download:
   cmd.run:
-  - name: wget http://selenium.googlecode.com/files/selenium-server-standalone-{{ selenium_version }}.jar
-  - unless: "[ -f /root/selenium-server-standalone-{{ selenium_version }}.jar ]"
+  - name: wget http://selenium.googlecode.com/files/selenium-hub-standalone-{{ selenium_version }}.jar
+  - unless: "[ -f /root/selenium-hub-standalone-{{ selenium_version }}.jar ]"
   - require:
-    - file: selenium_home_dir
+    - file: selenium_hub_dir
 
-selenium_copy_war:
+selenium_hub_deploy_war:
   cmd.run:
-  - name: cp selenium-server-standalone-{{ selenium_version }}.jar /srv/selenium/selenium.jar
+  - name: cp selenium-hub-standalone-{{ selenium_version }}.jar /srv/selenium/selenium.jar
   - unless: "[ -f /srv/selenium/selenium.jar ]"
   - require:
-    - cmd: selenium_download
+    - cmd: selenium_hub_download
 
-/etc/init.d/selenium-server:
+/etc/init.d/selenium-hub:
   file.managed:
-  - source: salt://selenium/conf/selenium-server
+  - source: salt://selenium/conf/selenium-hub
   - template: jinja
   - mode: 755
   - require:
-    - cmd: selenium_copy_war
+    - cmd: selenium_hub_deploy_war
 
-selenium_service:
+selenium_hub:
   service.running:
   - enable: true
-  - name: selenium-server
+  - name: selenium-hub
   - require:
-    - file: /etc/init.d/selenium-server
+    - file: /etc/init.d/selenium-hub
 
 {%- for driver in pillar.selenium.drivers %}
 

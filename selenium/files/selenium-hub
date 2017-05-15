@@ -1,6 +1,6 @@
 #!/bin/bash
-# blatantly lifted from http://robfan.com/post/122618829/continuous-integration-selenium-firefox-flash
-export DISPLAY=:{{ pillar.selenium.xvfb.display }}
+{%- from "selenium/map.jinja" import hub with context %}
+# Taken from http://robfan.com/post/122618829/continuous-integration-selenium-firefox-flash
 
 case "${1:-''}" in
         'start')
@@ -8,7 +8,7 @@ case "${1:-''}" in
                 then
                         echo "Selenium is already running."
                 else
-                        java -jar /srv/selenium/selenium.jar > /tmp/selenium.log & echo $! > /tmp/selenium.pid
+                        java -jar {{ hub.dir.base }}/selenium.jar -role hub > /tmp/selenium.log & echo $! > /tmp/selenium.pid
                         echo "Starting Selenium..."
 
                         error=$?
@@ -39,7 +39,7 @@ case "${1:-''}" in
                         kill -HUP `cat /tmp/selenium.pid`
                         test -f /tmp/selenium.pid && rm -f /tmp/selenium.pid
                         sleep 1
-                        java -jar /srv/selenium/selenium.jar > /tmp/selenium.log & echo $! > /tmp/selenium.pid
+                        java -jar {{ hub.dir.base }}/selenium.jar -role hub > /tmp/selenium.log & echo $! > /tmp/selenium.pid
                         echo "Reload Selenium..."
                 else
                         echo "Selenium isn't running..."

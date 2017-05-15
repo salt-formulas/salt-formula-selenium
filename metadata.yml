@@ -1,0 +1,3 @@
+name: "selenium"
+version: "0.1"
+source: "https://github.com/tcpcloud/salt-formula-selenium"

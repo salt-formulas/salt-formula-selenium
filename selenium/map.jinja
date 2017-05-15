@@ -1,0 +1,25 @@
+{%- set version = salt['pillar.get']('selenium:server:version', '3.0.1') %}
+{%- set source = 'http://selenium-release.storage.googleapis.com/3.0/selenium-server-standalone-'+version+'.jar' %}
+
+{%- load_yaml as node_defaults %}
+default:
+  source: {{ source }}
+  version: {{ version }}
+  hub:
+    host: 127.0.0.1
+    port: 4444
+  dir:
+    base: /srv/selenium/node
+{%- endload %}
+
+{%- set node = salt['grains.filter_by'](node_defaults, merge=salt['pillar.get']('selenium:node')) %}
+
+{%- load_yaml as hub_defaults %}
+default:
+  source: {{ source }}
+  version: {{ version }}
+  dir:
+    base: /srv/selenium/hub
+{%- endload %}
+
+{%- set hub = salt['grains.filter_by'](hub_defaults, merge=salt['pillar.get']('selenium:hub')) %}
