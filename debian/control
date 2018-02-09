@@ -10,6 +10,6 @@ Vcs-Git: https://github.com/tcpcloud/salt-formula-selenium.git
 
 Package: salt-formula-selenium
 Architecture: all
-Depends: ${misc:Depends}, salt-master, reclass
+Depends: ${misc:Depends}
 Description: selenium salt formula
  Install and configure selenium system.
